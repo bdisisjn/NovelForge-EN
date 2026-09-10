@@ -66,6 +66,10 @@ _GENERIC_ENTITY_WORDS = {
     "snow", "butler", "coachman", "servants", "rabbit", "rabbits", "mom", "dad", "papa", "gramps", "grandpa",
     "young man", "old man", "principal", "dean", "dorm master", "evil god", "god", "goddess", "saintess",
     "head maid", "narrator", "dog", "cat", "horse", "dragon", "beast", "sword", "shield", "bow", "spear",
+    "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety", "hundred", "thousand", "million", "billion",
+    "by", "kept", "opened", "adjusted", "counting", "lazy", "charity", "maximum", "minimum", "item", "material", "platinum", "condition", "cosmetic", "note", "gemstone", "sapphire", "concealed", "appraisal", "pawnshop", "vault", "counter", "ledger", "coin", "coins", "copper", "signet", "brooch", "brooches", "signet brooch",
+    "subtract", "subtraction", "minus", "plus", "times", "divide", "divided", "multiply", "multiplied", "inspections", "inspection", "add", "addition", "calculate", "calculation", "calculations", "verify", "verification", "check", "checks", "test", "tests", "measure", "measurement", "weigh", "weight", "weights", "record", "records", "grade", "grades", "tier", "tiers", "rank", "ranks", "rating", "ratings", "value", "values", "valuation", "valuations", "quality", "stability", "paste", "ruby", "rubies", "gem", "gems", "emerald", "emeralds", "diamond", "diamonds", "bronze", "brass", "steel", "lead", "tin", "mithril", "adamantite", "orichalcum", "damage", "damaged", "repair", "repaired", "repairs", "flaw", "flaws", "crack", "cracks", "chip", "chips", "rust", "tarnish", "wear", "scratch", "scratches", "bezel", "bezels", "setting", "settings", "prong", "prongs", "facet", "facets", "clarity", "carat", "carats", "purity", "safe", "safes", "register", "registers", "receipt", "receipts", "ticket", "tickets", "fee", "fees", "tax", "taxes", "debt", "debts", "loan", "loans", "pledge", "pledges", "interest", "deposit", "deposits", "balance", "balances", "total", "totals", "sum", "sums", "difference", "rate", "rates", "price", "prices", "cost", "costs", "profit", "profits", "loss", "losses", "cut", "cuts", "share", "shares", "monopoly", "trade", "trades", "route", "routes", "market", "markets", "guild", "guilds", "council", "councils", "firm", "firms", "house", "houses", "shop", "shops", "store", "stores", "merchant", "merchants", "dealer", "dealers", "broker", "brokers", "appraiser", "appraisers", "client", "clients", "customer", "customers", "buyer", "buyers", "seller", "sellers", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "row", "rows", "dormant", "ducal", "noble", "nobles", "widow", "widows", "crier", "criers", "prime", "lending",
+    "i've", "i'm", "i'll", "i'd", "we've", "they've", "you've", "he's", "she's", "it's", "there's", "what's", "don't", "didn't", "won't", "wouldn't", "can't", "couldn't", "haven't", "hasn't", "hadn't", "isn't", "aren't", "wasn't", "weren't",
 }
 
 GENERIC_CATEGORY_WORDS = {
@@ -137,6 +141,8 @@ def extract_candidate_terms(text: str, language: Optional[str] = None) -> Counte
                 counts[m] += 1
     else:
         for m in _CAP_TERM.findall(text):
+            if "'" in m or "’" in m:
+                continue
             words = m.split()
             if words[0] in _EN_STOP or m in _EN_STOP:
                 continue
@@ -302,7 +308,7 @@ def check_text(
     term_hits = 0
     term_findings: List[Finding] = []
     for term in sorted(profile.distinctive_terms - profile.entity_names):
-        if term in allowed or len(term) < 4 or is_non_name_word(term):
+        if term in allowed or len(term) < 4 or "'" in term or "’" in term or is_non_name_word(term) or term in _GENERIC_ENTITY_WORDS:
             continue
         if re.search(rf"(?<![\w]){re.escape(term)}(?![\w])", lowered):
             term_hits += 1

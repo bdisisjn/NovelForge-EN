@@ -217,8 +217,8 @@ class ChapterContextCompiler:
         pov: Optional[str] = None,
         participants: Optional[Sequence[str]] = None,
         expected_canon_revision: Optional[int] = None,
-        budget_chars: int = 32000,
-        example_budget_chars: int = 2400,
+        budget_chars: int = 120000,
+        example_budget_chars: int = 8000,
         recently_used_examples: Iterable[str] = (),
         word_target: Optional[int] = None,
         regenerate: bool = False,
@@ -381,7 +381,6 @@ class ChapterContextCompiler:
                     seen_f.add(key)
                     deduped.append(f)
             forbidden_outcomes = deduped
-            prohibited += forbidden_outcomes
         fact_classes["prohibited"] += forbidden_outcomes
 
         # 9-10. POV and knowledge boundary (mandatory)
